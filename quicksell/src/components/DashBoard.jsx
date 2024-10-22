@@ -2,6 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BoardContext } from "../context/BoardContext";
 import "../styes/DashBoard.css";
+import Add from '../assets/add.svg'
+import Dots from '../assets/dots.svg'
+import High from '../assets/High.svg'
+import BackLog from '../assets/Backlog.svg'
+import TODO from '../assets/To-do.svg'
+import Progress from '../assets/in-progress.svg'
+import Done from '../assets/Done.svg'
+import Cancelled from '../assets/Cancelled.svg'
+import Urgent from '../assets/Urgent.svg'
+import Medium from '../assets/Medium.svg'
+import Low from '../assets/Low.svg'
+import NO from '../assets/No-priority.svg'
 const DashBoard = () => {
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
@@ -64,33 +76,33 @@ const DashBoard = () => {
   const getPriorityIcon = (priority) => {
     switch (priority) {
       case 4:
-        return "⚡"; // Urgent
+        return <img src={Urgent} alt="Urgent priority" />; // Urgent
       case 3:
-        return "🔴"; // High
+        return <img src={High} alt="high priority" />; // High
       case 2:
-        return "🟡"; // Medium
+        return <img src={Medium} alt="high priority" />; // Medium
       case 1:
-        return "🔵"; // Low
+        return <img src={Low} alt="high priority" />; // Low
       case 0:
       default:
-        return "⚪"; // No priority
+        return <img src={NO} alt="high priority" />; // No priority
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
       case "backlog":
-        return "📋";
+        return <img src={BackLog} alt="high priority" />;
       case "todo":
-        return "📝";
+        return <img src={TODO} alt="high priority" />;
       case "in progress":
-        return "🔄";
+        return <img src={Progress} alt="high priority" />;
       case "done":
-        return "✅";
+        return <img src={Done} alt="high priority" />;
       case "cancelled":
-        return "❌";
+        return <img src={Cancelled} alt="high priority" />;
       default:
-        return "📌";
+        return "";
     }
   };
   return (
@@ -111,8 +123,8 @@ const DashBoard = () => {
                 <span className="ticket-count">{group.tickets.length}</span>
               </div>
               <div className="header-actions">
-                <button className="icon-button">+</button>
-                <button className="icon-button">⋯</button>
+                <button className="icon-button"><img src= {Add} alt="" /></button>
+                <button className="icon-button"><img src= {Dots} alt="" /></button>
               </div>
             </div>
             <div className="tickets-container">
