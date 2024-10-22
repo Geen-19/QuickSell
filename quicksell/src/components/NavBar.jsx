@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import '../styes/NavBar.scss'
+import { BoardContext } from "../context/BoardContext";
+
 const NavBar = () => {
+  const { grouping, setGrouping, sortOption, setSortOption } = useContext(BoardContext);
     const [isOpen, setIsOpen] = useState(true);
   return (
     <div className="Navbar">
@@ -14,7 +17,7 @@ const NavBar = () => {
           <div className="dropdown-content">
             <div className="Grouping">
               <label>Grouping</label>
-              <select>
+              <select value={grouping} onChange={(e) => setGrouping(e.target.value)}>
                 <option value="status">Status</option>
                 <option value="users">User</option>
                 <option value="priority">Priority</option>
@@ -22,7 +25,7 @@ const NavBar = () => {
             </div>
             <div className="Ordering">
               <label>Ordering</label>
-              <select>
+              <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
                 <option value="priority">Priority</option>
                 <option value="title">Title</option>
               </select>
