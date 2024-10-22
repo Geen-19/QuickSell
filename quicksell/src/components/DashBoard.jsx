@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BoardContext } from "../context/BoardContext";
 import "../styes/DashBoard.css";
-import Add from '../assets/add.svg'
-import Dots from '../assets/dots.svg'
-import High from '../assets/High.svg'
-import BackLog from '../assets/Backlog.svg'
-import TODO from '../assets/To-do.svg'
-import Progress from '../assets/in-progress.svg'
-import Done from '../assets/Done.svg'
-import Cancelled from '../assets/Cancelled.svg'
-import Urgent from '../assets/Urgent.svg'
-import Medium from '../assets/Medium.svg'
-import Low from '../assets/Low.svg'
-import NO from '../assets/No-priority.svg'
+import Add from "../assets/add.svg";
+import Dots from "../assets/dots.svg";
+import High from "../assets/High.svg";
+import BackLog from "../assets/Backlog.svg";
+import TODO from "../assets/To-do.svg";
+import Progress from "../assets/in-progress.svg";
+import Done from "../assets/Done.svg";
+import Cancelled from "../assets/Cancelled.svg";
+import Urgent from "../assets/Urgent.svg";
+import Medium from "../assets/Medium.svg";
+import Low from "../assets/Low.svg";
+import NO from "../assets/No-priority.svg";
 const DashBoard = () => {
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
@@ -123,8 +123,12 @@ const DashBoard = () => {
                 <span className="ticket-count">{group.tickets.length}</span>
               </div>
               <div className="header-actions">
-                <button className="icon-button"><img src= {Add} alt="" /></button>
-                <button className="icon-button"><img src= {Dots} alt="" /></button>
+                <button className="icon-button">
+                  <img src={Add} alt="Add" />
+                </button>
+                <button className="icon-button">
+                  <img src={Dots} alt="Options" />
+                </button>
               </div>
             </div>
             <div className="tickets-container">
@@ -132,26 +136,28 @@ const DashBoard = () => {
                 <div key={ticket.id} className="ticket-card">
                   <div className="ticket-header">
                     <span className="ticket-id">{ticket.id}</span>
-                    <div
-                      className="user-avatar"
-                      title={
-                        users.find((u) => u.id === ticket.userId)?.name ||
-                        "User"
-                      }
-                    >
-                      {users
-                        .find((u) => u.id === ticket.userId)
-                        ?.name.charAt(0) || "U"}
-                    </div>
+                    {grouping !== "user" && (
+                      <div
+                        className="user-avatar"
+                        title={
+                          users.find((u) => u.id === ticket.userId)?.name ||
+                          "User"
+                        }
+                      >
+                        {users
+                          .find((u) => u.id === ticket.userId)
+                          ?.name.charAt(0) || "U"}
+                      </div>
+                    )}
                   </div>
-                  <h3 className="ticket-title">
+                  <div className="ticket-title">
                     {grouping !== "status" && (
                       <span className="status-indicator">
                         {getStatusIcon(ticket.status)}
                       </span>
                     )}
-                    {ticket.title}
-                  </h3>
+                    <h3>{ticket.title}</h3>
+                  </div>
                   <div className="ticket-footer">
                     {grouping !== "priority" && (
                       <div className="tag priority-tag">
@@ -160,6 +166,7 @@ const DashBoard = () => {
                         </span>
                       </div>
                     )}
+
                     <div className="tag">
                       <div className="tag-dot"></div>
                       <span className="tag-text">Feature Request</span>

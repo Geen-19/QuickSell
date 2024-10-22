@@ -102,8 +102,11 @@
     background-color: #e5e7eb;
     border-radius: 50%;
   }
-  
   .ticket-title {
+    display: flex;
+    gap: 8px;
+  }
+  .ticket-title > h3 {
     font-size: 14px;
     font-weight: 500;
     color: #111827;
