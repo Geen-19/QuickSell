@@ -4,7 +4,7 @@ import { BoardContext } from "../context/BoardContext";
 import { useContext } from "react";
 const NavBar = () => {
   const { grouping, setGrouping, sortOption, setSortOption } = useContext(BoardContext);
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="Navbar">
       <div className="dropdown-container">

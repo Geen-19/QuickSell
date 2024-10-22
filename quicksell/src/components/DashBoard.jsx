@@ -14,6 +14,12 @@ import Urgent from "../assets/Urgent.svg";
 import Medium from "../assets/Medium.svg";
 import Low from "../assets/Low.svg";
 import NO from "../assets/No-priority.svg";
+import profile from "../assets/profile1.png";
+import profile1 from "../assets/profile1.png";
+import profile4 from "../assets/profile4.jpeg";
+import profile5 from "../assets/profile5.jpeg";
+import profile6 from "../assets/profile6.png";
+import profile7 from "../assets/profile7.png";
 const DashBoard = () => {
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
@@ -90,6 +96,8 @@ const DashBoard = () => {
   };
 
   const getStatusIcon = (status) => {
+    console.log(status);
+    if (status === undefined) return;
     switch (status.toLowerCase()) {
       case "backlog":
         return <img src={BackLog} alt="high priority" />;
@@ -112,14 +120,43 @@ const DashBoard = () => {
           <div key={group.group} className="column">
             <div className="column-header">
               <div className="header-left">
-                <span className="header-icon">
-                  {grouping === "priority"
-                    ? getPriorityIcon(group.tickets[0]?.priority)
-                    : grouping === "status"
-                    ? getStatusIcon(group.group)
-                    : "👤"}
-                </span>
-                <span className="group-name">{group.group}</span>
+                <div className="header-icon ">
+                  {grouping === "user" && (
+                    <div className="user-avatar-container user-avatar">
+                      <img
+                        src={
+                          group.tickets[0]?.userId === "usr-1"
+                            ? profile1
+                            : group.tickets[0]?.userId === "usr-2"
+                            ? profile6
+                            : group.tickets[0]?.userId === "usr-3"
+                            ? profile7
+                            : group.tickets[0]?.userId === "usr-4"
+                            ? profile5
+                            : group.tickets[0]?.userId === "usr-5"
+                            ? profile4
+                            : profile1
+                        }
+                        alt="user"
+                      />
+                      <div
+                        className={`availability-indicator ${
+                          users.find(
+                            (user) => user.id === group.tickets[0]?.userId
+                          )?.available
+                            ? "available"
+                            : "unavailable"
+                        }`}
+                      ></div>
+                    </div>
+                  )}
+
+                  {grouping === "priority" &&
+                    getPriorityIcon(group.tickets[0]?.priority)}
+                  {grouping === "status" &&
+                    getStatusIcon(group.tickets[0]?.status)}
+                </div>
+                <h1 className="group-name">{group.group}</h1>
                 <span className="ticket-count">{group.tickets.length}</span>
               </div>
               <div className="header-actions">
@@ -137,39 +174,60 @@ const DashBoard = () => {
                   <div className="ticket-header">
                     <span className="ticket-id">{ticket.id}</span>
                     {grouping !== "user" && (
-                      <div
-                        className="user-avatar"
-                        title={
-                          users.find((u) => u.id === ticket.userId)?.name ||
-                          "User"
-                        }
-                      >
-                        {users
-                          .find((u) => u.id === ticket.userId)
-                          ?.name.charAt(0) || "U"}
+                      <div className="user-avatar-container">
+                        <div
+                          className={"user-avatar"}
+                          title={
+                            users.find((u) => u.id === ticket.userId)?.name ||
+                            "User"
+                          }
+                        >
+                          <img
+                            src={
+                              ticket.userId === "usr-1"
+                                ? profile1
+                                : ticket.userId === "usr-2"
+                                ? profile6
+                                : ticket.userId === "usr-3"
+                                ? profile7
+                                : ticket.userId === "usr-4"
+                                ? profile5
+                                : ticket.userId === "usr-5"
+                                ? profile4
+                                : profile5
+                            }
+                            alt="user"
+                          />
+                          <div
+                            className={`availability-indicator ${
+                              users.find((user) => user.id === ticket.userId)
+                                ?.available
+                                ? "available"
+                                : "unavailable"
+                            }`}
+                          ></div>
+                        </div>
                       </div>
                     )}
                   </div>
                   <div className="ticket-title">
                     {grouping !== "status" && (
-                      <span className="status-indicator">
-                        {getStatusIcon(ticket.status)}
-                      </span>
+                      <p>{getStatusIcon(ticket.status)}</p>
                     )}
                     <h3>{ticket.title}</h3>
                   </div>
                   <div className="ticket-footer">
-                    {grouping !== "priority" && (
-                      <div className="tag priority-tag">
-                        <span className="priority-icon">
+                    <div className="ticket-footer-sub">
+                      {grouping !== "priority" && (
+                        <div className="tag priority-tag">
                           {getPriorityIcon(ticket.priority)}
-                        </span>
-                      </div>
-                    )}
+                        </div>
+                      )}
 
-                    <div className="tag">
-                      <div className="tag-dot"></div>
-                      <span className="tag-text">Feature Request</span>
+                      <div className="tag">
+                        <div className="tag-dot"></div>
+                        <span className="tag-text">{ticket.tag[0]}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
