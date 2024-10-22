@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../styes/NavBar.scss'
 import { BoardContext } from "../context/BoardContext";
-
+import { useContext } from "react";
 const NavBar = () => {
   const { grouping, setGrouping, sortOption, setSortOption } = useContext(BoardContext);
     const [isOpen, setIsOpen] = useState(true);
@@ -19,7 +19,7 @@ const NavBar = () => {
               <label>Grouping</label>
               <select value={grouping} onChange={(e) => setGrouping(e.target.value)}>
                 <option value="status">Status</option>
-                <option value="users">User</option>
+                <option value="user">User</option>
                 <option value="priority">Priority</option>
               </select>
             </div>

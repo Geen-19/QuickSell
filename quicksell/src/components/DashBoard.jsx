@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-
+import { BoardContext } from "../context/BoardContext";
+import "../styes/DashBoard.css";
 const DashBoard = () => {
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
-  const [grouping, setGrouping] = useState("priority"); // default grouping by status
-  const [sortOption, setSortOption] = useState('title');
+  const { grouping, sortOption } = useContext(BoardContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +32,7 @@ const DashBoard = () => {
   };
 
   const groupByStatus = () => {
-    const statuses = ["Backlog", "Todo", "In progress", "Done"];
+    const statuses = ["Backlog", "Todo", "In progress", "Done", "Cancelled"];
     return statuses.map((status) => ({
       group: status,
       tickets: tickets.filter((ticket) => ticket.status === status),
@@ -61,21 +61,101 @@ const DashBoard = () => {
     }
     return ticketArray;
   };
+  const getPriorityIcon = (priority) => {
+    switch (priority) {
+      case 4:
+        return "⚡"; // Urgent
+      case 3:
+        return "🔴"; // High
+      case 2:
+        return "🟡"; // Medium
+      case 1:
+        return "🔵"; // Low
+      case 0:
+      default:
+        return "⚪"; // No priority
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status.toLowerCase()) {
+      case "backlog":
+        return "📋";
+      case "todo":
+        return "📝";
+      case "in progress":
+        return "🔄";
+      case "done":
+        return "✅";
+      case "cancelled":
+        return "❌";
+      default:
+        return "📌";
+    }
+  };
   return (
-    <div>
-      <div className="columns">
+    <div className="dashboard">
+      <div className="board">
         {groupTickets().map((group) => (
           <div key={group.group} className="column">
-            <h2>{group.group}</h2>
-            <ul>
+            <div className="column-header">
+              <div className="header-left">
+                <span className="header-icon">
+                  {grouping === "priority"
+                    ? getPriorityIcon(group.tickets[0]?.priority)
+                    : grouping === "status"
+                    ? getStatusIcon(group.group)
+                    : "👤"}
+                </span>
+                <span className="group-name">{group.group}</span>
+                <span className="ticket-count">{group.tickets.length}</span>
+              </div>
+              <div className="header-actions">
+                <button className="icon-button">+</button>
+                <button className="icon-button">⋯</button>
+              </div>
+            </div>
+            <div className="tickets-container">
               {sortTickets(group.tickets).map((ticket) => (
-                <li key={ticket.id} className="ticket">
-                  <strong>{ticket.title}</strong>
-                  <p>Priority: {ticket.priority}</p>
-                  <p>Status: {ticket.status}</p>
-                </li>
+                <div key={ticket.id} className="ticket-card">
+                  <div className="ticket-header">
+                    <span className="ticket-id">{ticket.id}</span>
+                    <div
+                      className="user-avatar"
+                      title={
+                        users.find((u) => u.id === ticket.userId)?.name ||
+                        "User"
+                      }
+                    >
+                      {users
+                        .find((u) => u.id === ticket.userId)
+                        ?.name.charAt(0) || "U"}
+                    </div>
+                  </div>
+                  <h3 className="ticket-title">
+                    {grouping !== "status" && (
+                      <span className="status-indicator">
+                        {getStatusIcon(ticket.status)}
+                      </span>
+                    )}
+                    {ticket.title}
+                  </h3>
+                  <div className="ticket-footer">
+                    {grouping !== "priority" && (
+                      <div className="tag priority-tag">
+                        <span className="priority-icon">
+                          {getPriorityIcon(ticket.priority)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="tag">
+                      <div className="tag-dot"></div>
+                      <span className="tag-text">Feature Request</span>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
       </div>
